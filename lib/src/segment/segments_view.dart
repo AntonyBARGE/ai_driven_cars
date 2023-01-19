@@ -39,7 +39,15 @@ class SegmentsPainter extends CustomPainter {
           canvas.drawLine(Offset(segment.start.dx, startY), Offset(segment.start.dx, startY + dashHeight), paint);
           startY += dashHeight + dashSpace;
         }
-      } else {
+      } 
+      else if (segment.percentageColored != null) {
+        double percentage = segment.percentageColored!;
+        paint.color = Colors.yellow;
+        Offset drawStart = Offset(segment.start.dx, segment.start.dy + drawingTopOffset);
+        Offset drawEnd = Offset(segment.end.dx, segment.end.dy + drawingTopOffset);
+        canvas.drawLine(drawStart, drawEnd, paint);
+      } 
+      else {
         Offset drawStart = Offset(segment.start.dx, segment.start.dy + drawingTopOffset);
         Offset drawEnd = Offset(segment.end.dx, segment.end.dy + drawingTopOffset);
         canvas.drawLine(drawStart, drawEnd, paint);

@@ -47,6 +47,7 @@ class Sensor {
         rayPercentageDistance = touches.reduce((minimum, touch) => minimum.percentage > touch.percentage ? touch : minimum).percentage;
       }
       detectedObstacleDistance.add(rayPercentageDistance);
+      rays[rayIndex].percentageColored = rayPercentageDistance;
     }
     return detectedObstacleDistance;
   }    

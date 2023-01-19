@@ -64,7 +64,7 @@ class _RoadViewState extends State<RoadView> {
   List<Widget> displaySegments() {
     Road road = widget.road;
     List<List<Segment>> carsSensors = List.generate(road.cars!.length, (index) => road.cars![0].sensor!.rays);
-    List<Segment> segmentsToDisplay = road.obstacles! + road.laneLines! + road.hitboxes;
+    List<Segment> segmentsToDisplay = road.laneLines! + road.borders!;
     for (var rayList in carsSensors) {
       for (var ray in rayList) {
         segmentsToDisplay.add(ray);

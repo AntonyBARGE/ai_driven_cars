@@ -8,8 +8,9 @@ class Segment {
   final Offset start;
   final Offset end;
   bool isDotted;
+  double? percentageColored;
 
-  Segment(this.start, this.end, {isDotted}) : isDotted = isDotted ?? false;
+  Segment(this.start, this.end, {isDotted, percentageColored}) : isDotted = isDotted ?? false;
 
   Touch? getIntersection(Segment obstacle){
     Offset a = start;
