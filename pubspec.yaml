@@ -1,0 +1,41 @@
+name: ai_driven_cars
+description: A new Flutter project.
+
+# Prevent accidental publishing to pub.dev.
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=2.18.6 <3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  shared_preferences: ^2.0.16
+  flutter_joystick: ^0.0.3
+  animated_bottom_navigation_bar: ^1.1.0+1
+  auto_size_text: ^3.0.0
+  circular_reveal_animation: ^2.0.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true
+
+  # Enable generation of localized Strings from arb files.
+  generate: true
+
+  assets:
+    # Add assets from the images directory to the application.
+    - fefe.png
+    - fefedead.png
+    - obstacle.png
+    - assets/images/
