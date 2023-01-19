@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'parameters/parameters_alert.dart';
 import 'road/road.dart';
 import 'road/road_view.dart';
 import 'road/road_view_web.dart';
@@ -49,24 +50,50 @@ class MyApp extends StatelessWidget {
           settings: routeSettings,
           builder: (BuildContext context) {
             screenSize = MediaQuery.of(context).size;
-            return FutureBuilder<Road>(
-              future: getRoad(),
-              builder: (context, AsyncSnapshot<Road> snapshot) {
-                if (snapshot.hasData) {
-                  Road road = snapshot.data!;
-                  switch (routeSettings.name) {
-                    case RoadView.routeName:
-                      return (screenWidth > 480) ? addButtonsPanel(RoadViewWeb(road), road) : addButtonsPanel(RoadView(road), road);
-                    default:
-                      return addButtonsPanel(RoadView(road), road);
-                  }
-                } else {
-                  return const CircularProgressIndicator();
-                }
-              }
-            );
+            return BuilderForRefresh(routeSettings);
           },
         );
+      }
+    );
+  }
+}
+
+class BuilderForRefresh extends StatefulWidget {
+  RouteSettings routeSettings;
+  BuilderForRefresh(this.routeSettings, {super.key});
+
+  @override
+  State<BuilderForRefresh> createState() => _BuilderForRefreshState();
+}
+
+class _BuilderForRefreshState extends State<BuilderForRefresh> {
+  @override
+  Widget build(BuildContext context) {
+    RouteSettings routeSettings = widget.routeSettings;
+    return FutureBuilder<Road>(
+      future: getRoad(),
+      builder: (context, AsyncSnapshot<Road> snapshot) {
+        if (snapshot.hasData) {
+          Road road = snapshot.data!;
+          switch (routeSettings.name) {
+            case RoadView.routeName:
+              return (screenWidth > 480) ? AddButtonsPanel(
+                  road: road,
+                  refresh: refresh,
+                  child: RoadViewWeb(road)) : 
+                AddButtonsPanel(
+                  road: road,
+                  refresh: refresh,
+                  child: RoadView(road));
+            default:
+              return AddButtonsPanel(
+                  road: road,
+                  refresh: refresh,
+                  child: RoadView(road));
+          }
+        } else {
+          return const CircularProgressIndicator();
+        }
       }
     );
   }
@@ -78,25 +105,49 @@ class MyApp extends StatelessWidget {
     );
   }
 
-  Widget addButtonsPanel(Widget pageView, Road road){
+  void refresh(){
+    setState(() {});
+  }
+}
+
+class AddButtonsPanel extends StatelessWidget {
+  Widget child;
+  Function refresh;
+  Road road;
+  AddButtonsPanel({required this.child, required this.refresh, required this.road, super.key});
+
+  @override
+  Widget build(BuildContext context) {
     return Stack(
       children: [
-        pageView,
+        child,
         ButtonsPanel(
           save: () => LocalStorageService.setBestBrain(road.cars!.first.brain!), 
           delete: () => LocalStorageService.clearBestBrain(), 
-          showParameters: showParameters, 
+          refresh: () => refresh(),
+          showParameters: () => showParameters(context), 
           showVariation: showVariation
         )
       ]
     );
   }
-  
-  void showParameters(){
-    print("showParameters");
-    ///TODO: parameters alert
+
+  void showParameters(BuildContext context){
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return ParametersAlertDialog(
+          road: road,
+          newLaneCount: road.laneCount.toDouble(),
+          newCarsPerGeneration: carsPerGeneration.toDouble(),
+          newRoadWidth: road.roadWidth.toDouble(),
+          newRayCount: carSensorRayCount.toDouble(),
+          newFps: fps.toDouble(),
+        );
+      },
+    );
   }
-  
+
   void showVariation(){
     print("showVariation");
     ///TODO: parameters alert

@@ -10,10 +10,11 @@ import 'package:flutter/services.dart';
 class ButtonsPanel extends StatefulWidget {
   Function save;
   Function delete;
+  Function refresh;
   Function showParameters;
   Function showVariation;
 
-  ButtonsPanel({Key? key, required this.save, required this.delete, 
+  ButtonsPanel({Key? key, required this.save, required this.delete, required this.refresh,
   required this.showParameters, required this.showVariation}) : super(key: key);
 
   @override
@@ -123,6 +124,7 @@ class _ButtonsPanelState extends State<ButtonsPanel> with TickerProviderStateMix
         onPressed: () {
           _fabAnimationController.reset();
           _borderRadiusAnimationController.reset();
+          widget.refresh();
           _borderRadiusAnimationController.forward();
           _fabAnimationController.forward();
         },
@@ -164,7 +166,6 @@ class _ButtonsPanelState extends State<ButtonsPanel> with TickerProviderStateMix
         leftCornerRadius: 32,
         rightCornerRadius: 32,
         onTap: (index) => setState(() {
-          print(index);
           _bottomNavIndex = index;
           functionList[index]();
         }),

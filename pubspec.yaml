@@ -20,6 +20,7 @@ dependencies:
   animated_bottom_navigation_bar: ^1.1.0+1
   auto_size_text: ^3.0.0
   circular_reveal_animation: ^2.0.1
+  syncfusion_flutter_sliders: ^19.1.56-beta
 
 dev_dependencies:
   flutter_test:

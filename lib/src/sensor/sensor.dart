@@ -10,7 +10,7 @@ import '../utils/utils.dart';
 
 class Sensor {
   Car car;
-  int rayCount = defaultRayCount;
+  int rayCount = carSensorRayCount;
   double rayLength = defaultRayLength;
   double raySpread = 2*pi/5;
   List<Segment> rays = [];
