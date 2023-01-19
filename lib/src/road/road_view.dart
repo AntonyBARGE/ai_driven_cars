@@ -75,12 +75,4 @@ class _RoadViewState extends State<RoadView> {
       drawingTopOffset: defaultCarY - road.cars!.first.y,
     )];
   }
-  
-  void save() {print("save");}
-  
-  void delete() {print("delete");}
-  
-  void showParameters() {print("showParameters");}
-  
-  void showVariation() {print("showVariation");}
 }
