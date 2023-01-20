@@ -42,7 +42,7 @@ class Sensor {
           touches.add(touch);
         }
       }
-      double rayPercentageDistance = 0;
+      double rayPercentageDistance = 1;
       if (touches.isNotEmpty){
         rayPercentageDistance = touches.reduce((minimum, touch) => minimum.percentage > touch.percentage ? touch : minimum).percentage;
       }

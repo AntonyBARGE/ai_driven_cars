@@ -1,3 +1,4 @@
+import 'package:ai_driven_cars/src/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 import '../utils/constants.dart';
@@ -45,7 +46,10 @@ class SegmentsPainter extends CustomPainter {
         paint.color = Colors.yellow;
         Offset drawStart = Offset(segment.start.dx, segment.start.dy + drawingTopOffset);
         Offset drawEnd = Offset(segment.end.dx, segment.end.dy + drawingTopOffset);
-        canvas.drawLine(drawStart, drawEnd, paint);
+        Offset drawMid = getMiddle(drawStart, drawEnd, percentage);
+        canvas.drawLine(drawStart, drawMid, paint);
+        paint.color = Colors.black;
+        canvas.drawLine(drawMid, drawEnd, paint);
       } 
       else {
         Offset drawStart = Offset(segment.start.dx, segment.start.dy + drawingTopOffset);
@@ -58,5 +62,12 @@ class SegmentsPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant SegmentsPainter oldDelegate) {
     return segments != oldDelegate.segments;
+  }
+  
+  Offset getMiddle(Offset drawStart, Offset drawEnd, double ratio) {
+    return Offset(
+      lerp(drawStart.dx, drawEnd.dx, ratio).toDouble(),
+      lerp(drawStart.dy, drawEnd.dy, ratio).toDouble()
+    );
   }
 }
