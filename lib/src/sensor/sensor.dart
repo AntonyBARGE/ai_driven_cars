@@ -43,7 +43,6 @@ class Sensor {
   }
 
   List<double> detectObstacles(){
-    List<double> trueObstacles = [];
     detectedObstacleDistance = List.generate(inputCount, (index) => 0.0);
 
     for (var rayIndex = 0; rayIndex < rayCount; rayIndex++) {
@@ -58,7 +57,6 @@ class Sensor {
       if (touches.isNotEmpty){
         rayPercentageDistance = touches.reduce((minimum, touch) => minimum.percentage > touch.percentage ? touch : minimum).percentage;
       }
-      trueObstacles.add(rayPercentageDistance);
       rays[rayIndex].percentageColored = rayPercentageDistance;
 
       int portion = (inputCount*lerp(raySpread, 0, rayIndex/(rayCount-1)))~/raySpread;
@@ -66,8 +64,8 @@ class Sensor {
         portion -= 1;
       }
       if (rayPercentageDistance < displayRays[portion].percentageColored!) {
-        displayRays[portion].percentageColored = rayPercentageDistance;
-        detectedObstacleDistance[portion] = rayPercentageDistance;
+        displayRays[inputCount - 1 - portion].percentageColored = rayPercentageDistance;
+        detectedObstacleDistance[inputCount - 1 - portion] = rayPercentageDistance;
       }
     }
     return detectedObstacleDistance;

@@ -8,7 +8,7 @@ double sw = screenWidth/100;
 double sh = screenHeight/100;
 
 double defaultRoadWidth = 95*sw;
-const int defaultLaneCount = 5;
+int defaultLaneCount = 5;
 double defaultCarWidth = defaultRoadWidth/(2*(defaultLaneCount - 1));
 
 double defaultCarY = 0.7*screenHeight;

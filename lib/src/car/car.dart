@@ -80,7 +80,7 @@ class Car {
       inputControls.forward = outputs[0] == 1;
       inputControls.right = outputs[1] == 1;
       inputControls.left = outputs[2] == 1;
-      inputControls.reverse = outputs[3] == 1;
+      //inputControls.reverse = outputs[3] == 1; //for simplicity
     }
     
     if(!isDamaged) {
