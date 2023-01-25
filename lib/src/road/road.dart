@@ -87,7 +87,6 @@ class Road {
         isAI: true,
         brain: index == 0 ? bestBrain : NeuralNetwork.symmetricalMutate(bestBrain.copy(), carsBrainMutationPercentage/100)
       );
-      //print(bestBrain.levels!.first.biases);
       return car;
       }
     );

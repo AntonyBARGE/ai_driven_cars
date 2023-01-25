@@ -12,15 +12,12 @@ class LocalStorageService {
 
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('bestBrain', bestBrainJSON);
-    print(bestBrainJSON);
-    print("saved");
   }
 
   static Future<NeuralNetwork> getBestBrain() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final bestBrainJSON = prefs.getString('bestBrain');
     if(bestBrainJSON == null) {
-      print("no brain in memory");
       return NeuralNetwork();
     }
 
@@ -33,6 +30,5 @@ class LocalStorageService {
   static Future<void> clearBestBrain() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove('bestBrain');
-    print("deleted");
   }
 }

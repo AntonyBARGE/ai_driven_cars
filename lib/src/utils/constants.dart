@@ -21,7 +21,7 @@ const double airFriction = 0.1;
 
 int fps = 60;
 Duration frameRefreshFrequency = Duration(milliseconds: 1000~/fps);
-int carsPerGeneration = 10;
+int carsPerGeneration = 100;
 int carsBrainMutationPercentage = 20;
 int carSensorRayCount = 21;
 int inputSensorCount = 5;

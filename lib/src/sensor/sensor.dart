@@ -67,6 +67,7 @@ class Sensor {
       }
       if (rayPercentageDistance < displayRays[portion].percentageColored!) {
         displayRays[portion].percentageColored = rayPercentageDistance;
+        detectedObstacleDistance[portion] = rayPercentageDistance;
       }
     }
     return detectedObstacleDistance;
