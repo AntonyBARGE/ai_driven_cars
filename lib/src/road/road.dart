@@ -79,6 +79,20 @@ class Road {
 
   static Future<List<Car>?> generateCarGeneration(Road road) async {
     NeuralNetwork bestBrain = await LocalStorageService.getBestBrain();
+    if(carsPerGeneration == 2){
+      return [
+        Car(road: road,
+          x: road.getLaneCenter(road.laneCount~/2),
+          y: 0.3*screenHeight,
+          brain: bestBrain,
+          isAI: true
+        ),
+        Car(road: road,
+          x: road.getLaneCenter(road.laneCount~/2),
+          y: 0.3*screenHeight,
+        ),
+      ];
+    }
     return List.generate(carsPerGeneration, (index) 
       {
         var car = Car(road: road,
@@ -194,13 +208,23 @@ class Road {
   }
   
   void deleteBadCars() {
-    cars!.removeWhere((car) => (car.isDamaged || car.y > 0.3*screenHeight) && car != cars!.first);
+    if (cars!.length > 2) {
+      cars!.removeWhere((car) => (car.isDamaged || car.y > 0.3*screenHeight) && car != cars!.first);
+    }
   }
   
   void focusOnBestCar() {
-    int bestCarIndex = cars!.indexWhere((car) => car.y == cars!.map((car) => car.y).reduce(min));
-    final Car temp = cars!.first;
-    cars!.first = cars![bestCarIndex];
-    cars![bestCarIndex] = temp;
+    if(carsPerGeneration == 2){
+      if (cars!.first.isAI) {
+        final Car temp = cars!.first;
+        cars!.first = cars![1];
+        cars![1] = temp;
+      }
+    } else {
+      int bestCarIndex = cars!.indexWhere((car) => car.y == cars!.map((car) => car.y).reduce(min));
+      final Car temp = cars!.first;
+      cars!.first = cars![bestCarIndex];
+      cars![bestCarIndex] = temp;
+    }
   }
 }

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import '../car/car_view.dart';
-import '../controls/controls_view.dart';
 import '../segment/segment.dart';
 import '../segment/segments_view.dart';
 import '../utils/constants.dart';
@@ -46,14 +45,11 @@ class _RoadViewState extends State<RoadView> {
       children: [
         Scaffold(
           backgroundColor: Colors.grey[700],
-          body: ControlsView(
-            car: road.cars![0],
-            child: Container(
-              width: road.roadWidth,
-              color: Colors.grey[400],
-              child: Stack(
-                children: displaySegments() + displayCars()
-              ),
+          body: Container(
+            width: road.roadWidth,
+            color: Colors.grey[400],
+            child: Stack(
+              children: displaySegments() + displayCars()
             ),
           ),
         ),

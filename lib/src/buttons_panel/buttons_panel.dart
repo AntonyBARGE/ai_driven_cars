@@ -12,10 +12,11 @@ class ButtonsPanel extends StatefulWidget {
   Function delete;
   Function refresh;
   Function showParameters;
-  Function showVariation;
+  Function switchDriveMode;
+  Widget child;
 
   ButtonsPanel({Key? key, required this.save, required this.delete, required this.refresh,
-  required this.showParameters, required this.showVariation}) : super(key: key);
+  required this.showParameters, required this.switchDriveMode, required this.child}) : super(key: key);
 
   @override
   _ButtonsPanelState createState() => _ButtonsPanelState();
@@ -23,7 +24,8 @@ class ButtonsPanel extends StatefulWidget {
 
 class _ButtonsPanelState extends State<ButtonsPanel> with TickerProviderStateMixin {
   final autoSizeGroup = AutoSizeGroup();
-  var _bottomNavIndex = 0; //default index of a first screen
+  int _bottomNavIndex = 0; //default index of a first screen
+  bool isManual = (carsPerGeneration == 2);
 
   late AnimationController _fabAnimationController;
   late AnimationController _borderRadiusAnimationController;
@@ -40,9 +42,9 @@ class _ButtonsPanelState extends State<ButtonsPanel> with TickerProviderStateMix
   @override
   void initState() {
     super.initState();
-    iconList = [Icons.settings, Icons.percent, Icons.save, Icons.delete,];
-    textList = ["Paramètres", "Variation", "Sauvegarder", "Supprimer"];
-    functionList = [widget.showParameters, widget.showVariation, widget.save, widget.delete,];
+    iconList = [Icons.settings, isManual ? Icons.engineering : Icons.precision_manufacturing, Icons.save, Icons.delete,];
+    textList = ["Paramètres", isManual ? "Manual" : "Auto", "Sauvegarder", "Supprimer"];
+    functionList = [widget.showParameters, widget.switchDriveMode, widget.save, widget.delete,];
 
     final systemTheme = SystemUiOverlayStyle.light.copyWith(
       systemNavigationBarColor: secondaryColor,
@@ -113,7 +115,7 @@ class _ButtonsPanelState extends State<ButtonsPanel> with TickerProviderStateMix
       backgroundColor: Colors.transparent,
       body: NotificationListener<ScrollNotification>(
         onNotification: onScrollNotification,
-        child: Container(color: Colors.transparent,),
+        child: widget.child,
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: primaryColor,

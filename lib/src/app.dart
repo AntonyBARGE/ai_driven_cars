@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
-import 'package:syncfusion_flutter_sliders/sliders.dart';
 
+import 'controls/controls_view.dart';
 import 'parameters/parameters_alert.dart';
 import 'road/road.dart';
 import 'road/road_view.dart';
@@ -143,7 +143,11 @@ class AddButtonsPanel extends StatelessWidget {
           delete: () => LocalStorageService.clearBestBrain(), 
           refresh: () => refresh(),
           showParameters: () => showParameters(context), 
-          showVariation: () => showVariation(context)
+          switchDriveMode: () => switchDriveMode(carsPerGeneration == 2),
+          child: ControlsView(
+            car: road.cars![1],
+            child: Container(color: Colors.transparent),
+          )
         )
       ]
     );
@@ -165,25 +169,8 @@ class AddButtonsPanel extends StatelessWidget {
     );
   }
 
-  void showVariation(BuildContext context){
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return SfSlider(
-          min: 0.0,
-          max: 100.0,
-          value: carsBrainMutationPercentage.toDouble(),
-          interval: 10,
-          stepSize: 0.5,
-          showLabels: true,
-          enableTooltip: true,
-          minorTicksPerInterval: 1,
-          onChanged: (dynamic value){
-            carsBrainMutationPercentage = value.toInt();
-            refresh();
-          },
-        );
-      },
-    );
+  void switchDriveMode(bool isManual){
+    carsPerGeneration = isManual ? 100 : 2;
+    refresh();
   }
 }
