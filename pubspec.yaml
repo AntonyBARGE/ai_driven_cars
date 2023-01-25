@@ -21,6 +21,8 @@ dependencies:
   auto_size_text: ^3.0.0
   circular_reveal_animation: ^2.0.1
   syncfusion_flutter_sliders: ^19.1.56-beta
+  info_popup: ^2.4.6
+  provider: ^6.0.5
 
 dev_dependencies:
   flutter_test:

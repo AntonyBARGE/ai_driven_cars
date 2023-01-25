@@ -79,13 +79,17 @@ class Road {
 
   static Future<List<Car>?> generateCarGeneration(Road road) async {
     NeuralNetwork bestBrain = await LocalStorageService.getBestBrain();
-    return List.generate(carsPerGeneration, (index) => 
-      Car(road: road,
+    return List.generate(carsPerGeneration, (index) 
+      {
+        var car = Car(road: road,
         x: road.getLaneCenter(road.laneCount~/2),
         y: 0.3*screenHeight,
         isAI: true,
-        brain: index == 0 ? bestBrain : NeuralNetwork.mutate(bestBrain, carsBrainMutationPercentage/100).copy()
-      )
+        brain: index == 0 ? bestBrain : NeuralNetwork.symmetricalMutate(bestBrain.copy(), carsBrainMutationPercentage/100)
+      );
+      //print(bestBrain.levels!.first.biases);
+      return car;
+      }
     );
   }
   

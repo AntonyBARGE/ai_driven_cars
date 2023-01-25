@@ -12,13 +12,17 @@ class LocalStorageService {
 
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('bestBrain', bestBrainJSON);
+    print(bestBrainJSON);
     print("saved");
   }
 
   static Future<NeuralNetwork> getBestBrain() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final bestBrainJSON = prefs.getString('bestBrain'); 
-    if(bestBrainJSON == null) return NeuralNetwork();
+    final bestBrainJSON = prefs.getString('bestBrain');
+    if(bestBrainJSON == null) {
+      print("no brain in memory");
+      return NeuralNetwork();
+    }
 
     /// Convertit le String du JSON du neuralNetwork
     /// pour qu'il puisse être récupéré sous une forme utilisable.

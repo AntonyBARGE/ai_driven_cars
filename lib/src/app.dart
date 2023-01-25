@@ -3,6 +3,8 @@ import 'package:ai_driven_cars/src/local_storage/local_storage_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
+import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 import 'parameters/parameters_alert.dart';
 import 'road/road.dart';
@@ -50,7 +52,7 @@ class MyApp extends StatelessWidget {
           settings: routeSettings,
           builder: (BuildContext context) {
             screenSize = MediaQuery.of(context).size;
-            return BuilderForRefresh(routeSettings);
+            return ContainerForRefresh(routeSettings);
           },
         );
       }
@@ -58,43 +60,62 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class BuilderForRefresh extends StatefulWidget {
+class ContainerForRefresh extends StatefulWidget {
   RouteSettings routeSettings;
-  BuilderForRefresh(this.routeSettings, {super.key});
+  ContainerForRefresh(this.routeSettings, {super.key});
 
   @override
-  State<BuilderForRefresh> createState() => _BuilderForRefreshState();
+  State<ContainerForRefresh> createState() => _ContainerForRefreshState();
 }
 
-class _BuilderForRefreshState extends State<BuilderForRefresh> {
+class _ContainerForRefreshState extends State<ContainerForRefresh> {
   @override
   Widget build(BuildContext context) {
-    RouteSettings routeSettings = widget.routeSettings;
-    return FutureBuilder<Road>(
-      future: getRoad(),
-      builder: (context, AsyncSnapshot<Road> snapshot) {
-        if (snapshot.hasData) {
-          Road road = snapshot.data!;
+    return Container(
+      child: WaitingRoadBuilder(widget.routeSettings, refresh)
+    );
+  }
+
+  void refresh(){
+    Navigator.pop(context);
+    Navigator.pushNamed(context, widget.routeSettings.name!);
+  }
+}
+
+class WaitingRoadBuilder extends StatelessWidget {
+  RouteSettings routeSettingsFromParent;
+  Function refresh;
+  WaitingRoadBuilder(this.routeSettingsFromParent, this.refresh, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    RouteSettings routeSettings = routeSettingsFromParent;
+    return FutureProvider(
+      create: (_) => getRoad(),
+      initialData: null,
+      child: Consumer<Road?>(builder: (context, road, child) {
+        if (road == null) {
+          return const CircularProgressIndicator();
+        } else {
           switch (routeSettings.name) {
             case RoadView.routeName:
               return (screenWidth > 480) ? AddButtonsPanel(
-                  road: road,
                   refresh: refresh,
+                  road: road,
                   child: RoadViewWeb(road)) : 
                 AddButtonsPanel(
-                  road: road,
                   refresh: refresh,
+                  road: road,
                   child: RoadView(road));
             default:
               return AddButtonsPanel(
-                  road: road,
                   refresh: refresh,
+                  road: road,
                   child: RoadView(road));
+            }
           }
-        } else {
-          return const CircularProgressIndicator();
         }
-      }
+      )
     );
   }
 
@@ -104,17 +125,13 @@ class _BuilderForRefreshState extends State<BuilderForRefresh> {
       roadWidth: defaultRoadWidth,
     );
   }
-
-  void refresh(){
-    setState(() {});
-  }
 }
 
 class AddButtonsPanel extends StatelessWidget {
   Widget child;
-  Function refresh;
   Road road;
-  AddButtonsPanel({required this.child, required this.refresh, required this.road, super.key});
+  Function refresh;
+  AddButtonsPanel({required this.child, required this.road, required this.refresh, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -122,11 +139,11 @@ class AddButtonsPanel extends StatelessWidget {
       children: [
         child,
         ButtonsPanel(
-          save: () => LocalStorageService.setBestBrain(road.cars!.first.brain!), 
+          save: () => LocalStorageService.setBestBrain(road.cars!.first.brain!),
           delete: () => LocalStorageService.clearBestBrain(), 
           refresh: () => refresh(),
           showParameters: () => showParameters(context), 
-          showVariation: showVariation
+          showVariation: () => showVariation(context)
         )
       ]
     );
@@ -148,8 +165,25 @@ class AddButtonsPanel extends StatelessWidget {
     );
   }
 
-  void showVariation(){
-    print("showVariation");
-    ///TODO: parameters alert
+  void showVariation(BuildContext context){
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return SfSlider(
+          min: 0.0,
+          max: 100.0,
+          value: carsBrainMutationPercentage.toDouble(),
+          interval: 10,
+          stepSize: 0.5,
+          showLabels: true,
+          enableTooltip: true,
+          minorTicksPerInterval: 1,
+          onChanged: (dynamic value){
+            carsBrainMutationPercentage = value.toInt();
+            refresh();
+          },
+        );
+      },
+    );
   }
 }

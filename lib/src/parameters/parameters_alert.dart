@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:info_popup/info_popup.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 import '../road/road.dart';
@@ -126,11 +127,87 @@ class _ParametersAlertDialogState extends State<ParametersAlertDialog> {
         carsPerGenerationSlider,
         rayCountSlider,
         fpsSlider,
-        saveButton
+        SfSlider(
+          min: 0.0,
+          max: 100.0,
+          value: carsBrainMutationPercentage.toDouble(),
+          interval: 10,
+          stepSize: 0.5,
+          showLabels: true,
+          enableTooltip: true,
+          minorTicksPerInterval: 1,
+          onChanged: (dynamic value){
+            setState(() {
+              carsBrainMutationPercentage = value.toInt();
+            });
+          },
+        ),
+        saveButton,
       ],
     );
 
     // show the dialog
     return alert;
+  }
+}
+
+class VariationPopUp extends StatelessWidget {
+  Widget child;
+  VariationPopUp({required this.child, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return InfoPopupWidget(
+      customContent: Container(
+        decoration: BoxDecoration(
+          color: Colors.green,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        // padding: const EdgeInsets.all(10),
+        // child: Column(
+        //   children: const <Widget>[
+        //     TextField(
+        //       decoration: InputDecoration(
+        //         hintText: 'Enter your name',
+        //         hintStyle: TextStyle(color: Colors.white),
+        //         enabledBorder: OutlineInputBorder(
+        //           borderSide: BorderSide(color: Colors.white),
+        //         ),
+        //       ),
+        //     ),
+        //     SizedBox(height: 10),
+        //     Center(
+        //       child: Text(
+        //         'Example of Info Popup inside a Bottom Sheet',
+        //         style: TextStyle(
+        //           color: Colors.white,
+        //         ),
+        //       ),
+        //     ),
+        //   ],
+        // ),
+      ),
+      arrowTheme: const InfoPopupArrowTheme(
+        color: Colors.pink,
+        arrowDirection: ArrowDirection.up,
+      ),
+      dismissTriggerBehavior: PopupDismissTriggerBehavior.onTapArea,
+      areaBackgroundColor: Colors.transparent,
+      indicatorOffset: Offset.zero,
+      contentOffset: Offset.zero,
+      onControllerCreated: (controller) {
+        print('Info Popup Controller Created');
+      },
+      onAreaPressed: (InfoPopupController controller) {
+        print('Area Pressed');
+      },
+      infoPopupDismissed: () {
+        print('Info Popup Dismissed');
+      },
+      onLayoutMounted: (Size size) {
+        print('Info Popup Layout Mounted');
+      },
+      child: child,
+    );
   }
 }

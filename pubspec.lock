@@ -112,6 +112,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  info_popup:
+    dependency: "direct main"
+    description:
+      name: info_popup
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.4.6"
   intl:
     dependency: transitive
     description:
@@ -154,6 +161,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.0"
+  nested:
+    dependency: transitive
+    description:
+      name: nested
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
   path:
     dependency: transitive
     description:
@@ -203,6 +217,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.2.4"
+  provider:
+    dependency: "direct main"
+    description:
+      name: provider
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "6.0.5"
   shared_preferences:
     dependency: "direct main"
     description:

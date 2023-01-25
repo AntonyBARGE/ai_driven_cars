@@ -35,7 +35,7 @@ class Car {
 
   NeuralNetwork? brain;
 
-  Car({required this.road, x, y, speed, maxSpeed, isMain, isAI, brain}) : 
+  Car({required this.road, x, y, speed, maxSpeed, isMain, isAI, this.brain}) : 
     speed = speed ?? 0.0, x = x ?? 0.0, y = y ?? 0.0, maxSpeed = maxSpeed ?? carMaxSpeed, 
     isAI = isAI ?? false, isMain = isMain ?? true
     {
@@ -45,7 +45,7 @@ class Car {
       sensor ??= Sensor(this);
       brain ??= NeuralNetwork(neurons: [
         sensor!.rayCount, // inputs
-        sensor!.rayCount + 2, // firstLevel
+        sensor!.rayCount + 1 + sensor!.rayCount.remainder(2), // firstLevel
         4, // outputs
       ]);
   }
@@ -75,11 +75,6 @@ class Car {
   void carUpdate(){
     Sensor.updateRays(sensor!);
     if (isAI) {
-      brain ??= NeuralNetwork(neurons: [
-        sensor!.rayCount, // inputs
-        sensor!.rayCount + 2, // firstLevel
-        4, // outputs
-      ]);
       List inputs = sensor!.detectObstacles();
       List outputs = NeuralNetwork.feedForward(inputs, brain!);
       inputControls.forward = outputs[0] == 1;

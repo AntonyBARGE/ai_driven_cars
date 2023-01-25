@@ -19,15 +19,24 @@ class RoadView extends StatefulWidget {
 }
 
 class _RoadViewState extends State<RoadView> {
+  late Timer timer;
+
   @override
   void initState() {
     super. initState();
-    Timer.periodic(frameRefreshFrequency, (Timer t) => 
+    timer = Timer.periodic(frameRefreshFrequency, (timer) => 
       setState(() {
         widget.road.updateTraffic();
         widget.road.updateRoad();
       })
-    );
+    ); 
+  }
+
+  @override
+  void dispose() {
+    timer.cancel();
+    timer;
+    super.dispose();
   }
   
   @override
@@ -63,7 +72,7 @@ class _RoadViewState extends State<RoadView> {
 
   List<Widget> displaySegments() {
     Road road = widget.road;
-    List<List<Segment>> carsSensors = List.generate(road.cars!.length, (index) => road.cars![0].sensor!.rays);
+    List<List<Segment>> carsSensors = List.generate(road.cars!.length, (index) => road.cars!.first.sensor!.displayRays);
     List<Segment> segmentsToDisplay = road.laneLines! + road.borders!;
     for (var rayList in carsSensors) {
       for (var ray in rayList) {

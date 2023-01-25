@@ -78,11 +78,11 @@ class _ButtonsPanelState extends State<ButtonsPanel> with TickerProviderStateMix
     );
 
     Future.delayed(
-      const Duration(seconds: 1),
+      const Duration(milliseconds: 200),
       () => _fabAnimationController.forward(),
     );
     Future.delayed(
-      const Duration(seconds: 1),
+      const Duration(milliseconds: 200),
       () => _borderRadiusAnimationController.forward(),
     );
   }
@@ -122,39 +122,14 @@ class _ButtonsPanelState extends State<ButtonsPanel> with TickerProviderStateMix
           color: secondaryColor,
         ),
         onPressed: () {
-          _fabAnimationController.reset();
-          _borderRadiusAnimationController.reset();
           widget.refresh();
-          _borderRadiusAnimationController.forward();
-          _fabAnimationController.forward();
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: AnimatedBottomNavigationBar.builder(
         itemCount: iconList.length,
         tabBuilder: (int index, bool isActive) {
-          final color = isActive ? primaryColor : Colors.white;
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                iconList[index],
-                size: 24,
-                color: color,
-              ),
-              const SizedBox(height: 4),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: AutoSizeText(
-                  textList[index],
-                  maxLines: 1,
-                  style: TextStyle(color: color),
-                  group: autoSizeGroup,
-                ),
-              )
-            ],
-          );
+          return tabButton(index, isActive);
         },
         backgroundColor: secondaryColor,
         activeIndex: _bottomNavIndex,
@@ -177,6 +152,31 @@ class _ButtonsPanelState extends State<ButtonsPanel> with TickerProviderStateMix
           color: Colors.white,
         ),
       ),
+    );
+  }
+  
+  Widget tabButton(int index, bool isActive) {
+    final color = isActive ? primaryColor : Colors.white;
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(
+          iconList[index],
+          size: 24,
+          color: color,
+        ),
+        const SizedBox(height: 4),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: AutoSizeText(
+            textList[index],
+            maxLines: 1,
+            style: TextStyle(color: color),
+            group: autoSizeGroup,
+          ),
+        )
+      ],
     );
   }
 }

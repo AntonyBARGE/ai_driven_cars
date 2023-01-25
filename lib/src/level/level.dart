@@ -10,7 +10,15 @@ class Level {
 
   Level(this.inputCount, this.outputCount, {this.inputs, this.outputs, this.biases, this.weights}){
     Level.initialize(this);
-    Level.randomize(this);
+    bool hasToBeRandomize = true;
+    for (var bias in biases!) {
+      if (bias != 0){
+        hasToBeRandomize = false;
+      }
+    }
+    if (hasToBeRandomize) {
+      Level.randomize(this);
+    }
   }
 
   static void initialize(Level level) {
