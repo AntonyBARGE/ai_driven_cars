@@ -8,10 +8,8 @@ class ParametersAlertDialog extends StatefulWidget {
   Road road;
   double newLaneCount;
   double newCarsPerGeneration;
-  double newRoadWidth;
-  double newRayCount;
   double newFps;
-  ParametersAlertDialog({required this.road, required this.newLaneCount, required this.newCarsPerGeneration, required this.newRoadWidth, required this.newRayCount, required this.newFps, super.key});
+  ParametersAlertDialog({required this.road, required this.newLaneCount, required this.newCarsPerGeneration, required this.newFps, super.key});
 
   @override
   State<ParametersAlertDialog> createState() => _ParametersAlertDialogState();
@@ -21,6 +19,16 @@ class _ParametersAlertDialogState extends State<ParametersAlertDialog> {
   @override
   Widget build(BuildContext context) {
     // set up the buttons
+    Widget symmetricalToggle = Row(
+      children: [
+        const Text("Symmétrie des neurones : "),
+        Switch(
+          value: widget.road.isSymmetrical,
+          onChanged: (_) => setState(() => widget.road.isSymmetrical = !widget.road.isSymmetrical)
+        )
+      ],
+    );
+
     Widget laneCountSlider = Column(
       children: [
         const Text("Nombre de voies :"),
@@ -102,6 +110,7 @@ class _ParametersAlertDialogState extends State<ParametersAlertDialog> {
     AlertDialog alert = AlertDialog(
       title: const Text("Paramètres"),
       actions: [
+        symmetricalToggle,
         laneCountSlider,
         carsPerGenerationSlider,
         fpsSlider,

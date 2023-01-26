@@ -161,8 +161,6 @@ class AddButtonsPanel extends StatelessWidget {
           road: road,
           newLaneCount: road.laneCount.toDouble(),
           newCarsPerGeneration: carsPerGeneration.toDouble(),
-          newRoadWidth: road.roadWidth.toDouble(),
-          newRayCount: carSensorRayCount.toDouble(),
           newFps: fps.toDouble(),
         );
       },

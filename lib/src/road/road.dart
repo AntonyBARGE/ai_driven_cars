@@ -18,6 +18,7 @@ class Road {
   List<Segment>? obstacles;
   List<Segment> hitboxes = [];
   List<bool> trafficWaves = [true, false, false];
+  bool isSymmetrical = false;
 
   /// Private constructor qui remplace l'original
   Road._create(this.roadWidth, this.laneCount) : assert(laneCount > 2){
@@ -93,13 +94,15 @@ class Road {
         ),
       ];
     }
-    return List.generate(carsPerGeneration, (index) 
-      {
+    return List.generate(carsPerGeneration, (index) {
+        NeuralNetwork brain = (index == 0) ? bestBrain :
+          (road.isSymmetrical ? NeuralNetwork.symmetricalMutate(bestBrain.copy(), carsBrainMutationPercentage/100) : 
+                                NeuralNetwork.mutate(bestBrain.copy(), carsBrainMutationPercentage/100));
         var car = Car(road: road,
         x: road.getLaneCenter(road.laneCount~/2),
         y: 0.3*screenHeight,
         isAI: true,
-        brain: index == 0 ? bestBrain : NeuralNetwork.symmetricalMutate(bestBrain.copy(), carsBrainMutationPercentage/100)
+        brain: brain
       );
       return car;
       }
