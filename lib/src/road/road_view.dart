@@ -41,19 +41,17 @@ class _RoadViewState extends State<RoadView> {
   @override
   Widget build(BuildContext context) {
     Road road = widget.road;
-    return Stack(
-      children: [
-        Scaffold(
-          backgroundColor: Colors.grey[700],
-          body: Container(
-            width: road.roadWidth,
-            color: Colors.grey[400],
-            child: Stack(
-              children: displaySegments() + displayCars()
-            ),
+    return Scaffold(
+      backgroundColor: Colors.grey[700],
+      body: Center(
+        child: Container(
+          width: road.roadWidth,
+          color: Colors.grey[400],
+          child: Stack(
+            children: displaySegments() + displayCars() + displayScore()
           ),
-        ),
-      ]
+        )
+      ),
     );
   }
   
@@ -81,5 +79,66 @@ class _RoadViewState extends State<RoadView> {
       segmentsToDisplay, 
       drawingTopOffset: defaultCarY - road.cars!.first.y,
     )];
+  }
+  
+  List<Widget> displayScore() {
+    return [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            height: 4*sh,
+            margin: const EdgeInsets.only(top: 40),
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.white),
+              gradient: const LinearGradient(
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+                colors: [
+                Color.fromRGBO(189, 189, 189, 1),
+                Color.fromRGBO(97, 97, 97, 1),
+                ],
+              ),
+            ),
+            child: FittedBox(
+              fit: BoxFit.fitHeight,
+              child: Text("${widget.road.score} pts",
+                style: const TextStyle(color: Colors.white),
+              )
+            )
+          )
+        ]
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            height: 4*sh,
+            margin: const EdgeInsets.only(top: 40),
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.white),
+              gradient: const LinearGradient(
+                begin: Alignment.centerRight,
+                end: Alignment.centerLeft,
+                colors: [
+                Color.fromRGBO(189, 189, 189, 1),
+                Color.fromRGBO(97, 97, 97, 1),
+                ],
+              ),
+            ),
+            child: FittedBox(
+              fit: BoxFit.fitHeight,
+              child: Text("PR : ${widget.road.bestScore} pts",
+                style: const TextStyle(color: Colors.white),
+              )
+            )
+          )
+        ]
+      )
+    ];
   }
 }

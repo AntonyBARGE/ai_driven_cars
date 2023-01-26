@@ -31,4 +31,20 @@ class LocalStorageService {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove('bestBrain');
   }
+
+  static Future<void> setPersonalRecord(int personalBest) async {
+    /// Convertit le neuralNetwork au format JSON dans une String
+    /// pour qu'il puisse être sauvegardé en local.
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setInt('personalRecord', personalBest);
+  }
+
+  static Future<int> getPersonalRecord() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final personalBestJSON = prefs.getInt('personalRecord');
+    if (personalBestJSON == null) {
+      return 0;
+    }
+    return personalBestJSON.toInt();
+  }
 }

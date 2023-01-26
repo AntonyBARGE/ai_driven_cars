@@ -19,6 +19,8 @@ class Road {
   List<Segment> hitboxes = [];
   List<bool> trafficWaves = [true, false, false];
   bool isSymmetrical = false;
+  int score = 0;
+  late int bestScore;
 
   /// Private constructor qui remplace l'original
   Road._create(this.roadWidth, this.laneCount) : assert(laneCount > 2){
@@ -44,6 +46,8 @@ class Road {
   /// Public factory pour pouvoir faire un constructeur avec un await
   static Future<Road> create({required double roadWidth, required int laneCount}) async {
     Road road = Road._create(roadWidth, laneCount);
+
+    road.bestScore = await LocalStorageService.getPersonalRecord();
 
     /// Définit les voitures de la route
     road.cars = await generateCarGeneration(road);
@@ -159,17 +163,21 @@ class Road {
     if (index < 0) {
       index = 0;
     }
-
-    for (var i = 0; i <= index; i++) {
-      if (!trafficWaves[index]) {
-        trafficWaves[index] = true;
+    if (index > score){
+      LocalStorageService.setPersonalRecord(index);
+      bestScore = index;
+    }
+    score = index;
+    for (var i = 0; i <= score; i++) {
+      if (!trafficWaves[score]) {
+        trafficWaves[score] = true;
       }
     }
 
     bool waveBeforeJustGotPassed = trafficWaves[trafficWaves.length-3] && !trafficWaves[trafficWaves.length-2] && !trafficWaves[trafficWaves.length-1];
     if (waveBeforeJustGotPassed){
-      generateCarWave(index);
-      deleteExcessCarWave(index);
+      generateCarWave(score);
+      deleteExcessCarWave(score);
     }
   }
   
