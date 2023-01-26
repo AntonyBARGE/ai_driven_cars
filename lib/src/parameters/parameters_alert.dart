@@ -21,7 +21,10 @@ class _ParametersAlertDialogState extends State<ParametersAlertDialog> {
     // set up the buttons
     Widget symmetricalToggle = Row(
       children: [
-        const Text("Symmétrie des neurones : "),
+        Container(
+          padding: const EdgeInsets.only(left: 20),
+          child: const Text("Symétrie des neurones : ")
+        ),
         Switch(
           value: widget.road.isSymmetrical,
           onChanged: (_) => setState(() => widget.road.isSymmetrical = !widget.road.isSymmetrical)

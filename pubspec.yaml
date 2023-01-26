@@ -38,4 +38,6 @@ flutter:
 
   assets:
     # Add assets from the images directory to the application.
-    - assets/cars/
+    - assets/images/fefe.png
+    - assets/images/fefedead.png
+    - assets/images/obstacle.png

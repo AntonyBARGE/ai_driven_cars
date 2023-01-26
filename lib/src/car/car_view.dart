@@ -9,9 +9,8 @@ class CarView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String carImage = "images/cars/";
+    String carImage = "assets/images/";
     carImage += car.isMain ? (car.isDamaged ? 'fefedead.png' : 'fefe.png') : 'obstacle.png';
-    print(carImage);
     double topOffset = 0.7 * screenHeight - car.road.cars!.first.y - car.height!/2;
     double leftOffset = -car.width!/2;
 

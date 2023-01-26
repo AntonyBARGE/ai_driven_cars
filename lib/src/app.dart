@@ -71,9 +71,7 @@ class ContainerForRefresh extends StatefulWidget {
 class _ContainerForRefreshState extends State<ContainerForRefresh> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: WaitingRoadBuilder(widget.routeSettings, refresh)
-    );
+    return WaitingRoadBuilder(widget.routeSettings, refresh);
   }
 
   void refresh(){
@@ -140,10 +138,10 @@ class AddButtonsPanel extends StatelessWidget {
         child,
         ButtonsPanel(
           save: () => LocalStorageService.setBestBrain(road.cars!.first.brain!),
-          delete: () => LocalStorageService.clearBestBrain(), 
+          delete: () => alertForDelete(context), 
           refresh: () => refresh(),
           showParameters: () => showParameters(context), 
-          switchDriveMode: () => switchDriveMode(carsPerGeneration == 2),
+          switchDriveMode: () => switchDriveMode(),
           child: ControlsView(
             car: road.cars![1],
             child: Container(color: Colors.transparent),
@@ -167,8 +165,42 @@ class AddButtonsPanel extends StatelessWidget {
     );
   }
 
-  void switchDriveMode(bool isManual){
+  void switchDriveMode(){
     carsPerGeneration = isManual ? 100 : 2;
+    isManual = !isManual;
     refresh();
+  }
+
+  alertForDelete(BuildContext context){
+    // set up the buttons
+    Widget cancelButton = TextButton(
+      child: const Text("Oui, je recommence"),
+      onPressed:  () {
+        LocalStorageService.clearBestBrain();
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = TextButton(
+      child: const Text("En fait non"),
+      onPressed:  () {Navigator.of(context).pop();},
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: const Text("Supprimer"),
+      content: const Text("Veux-tu supprimer la sauvegarde d'avant pour recommencer à 0 ?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 }

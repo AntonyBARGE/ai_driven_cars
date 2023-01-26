@@ -1,4 +1,5 @@
 
+import 'package:ai_driven_cars/src/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_joystick/flutter_joystick.dart';
 
@@ -18,7 +19,7 @@ class ControlsView extends StatelessWidget {
       mode: JoystickMode.all,
       initialJoystickAlignment: const Alignment(-5,-5),
       listener: (details) {
-        if (car.road.cars!.length == 2 && !car.isAI) {
+        if (isManual && !car.isAI) {
           Controls inputControls = car.inputControls;
           if (details.x > percentageVariation) {
             inputControls.right = true;

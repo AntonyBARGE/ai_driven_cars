@@ -70,9 +70,11 @@ class _RoadViewState extends State<RoadView> {
     Road road = widget.road;
     List<List<Segment>> carsSensors = List.generate(road.cars!.length, (index) => road.cars!.first.sensor!.displayRays);
     List<Segment> segmentsToDisplay = road.laneLines! + road.borders!;
-    for (var rayList in carsSensors) {
-      for (var ray in rayList) {
-        segmentsToDisplay.add(ray);
+    if (!isManual) {
+      for (var rayList in carsSensors) {
+        for (var ray in rayList) {
+          segmentsToDisplay.add(ray);
+        }
       }
     }
     return [SegmentsView(

@@ -80,7 +80,7 @@ class Road {
 
   static Future<List<Car>?> generateCarGeneration(Road road) async {
     NeuralNetwork bestBrain = await LocalStorageService.getBestBrain();
-    if(carsPerGeneration == 2){
+    if(isManual){
       return [
         Car(road: road,
           x: road.getLaneCenter(road.laneCount~/2),
@@ -217,7 +217,7 @@ class Road {
   }
   
   void focusOnBestCar() {
-    if(carsPerGeneration == 2){
+    if(isManual){
       if (cars!.first.isAI) {
         final Car temp = cars!.first;
         cars!.first = cars![1];
