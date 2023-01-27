@@ -163,7 +163,7 @@ class Road {
     if (index < 0) {
       index = 0;
     }
-    if (index > score){
+    if (index > bestScore){
       LocalStorageService.setPersonalRecord(index);
       bestScore = index;
     }

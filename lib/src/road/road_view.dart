@@ -82,63 +82,55 @@ class _RoadViewState extends State<RoadView> {
   }
   
   List<Widget> displayScore() {
+    bool isLeft = true;
     return [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            height: 4*sh,
-            margin: const EdgeInsets.only(top: 40),
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.white),
-              gradient: const LinearGradient(
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-                colors: [
-                Color.fromRGBO(189, 189, 189, 1),
-                Color.fromRGBO(97, 97, 97, 1),
-                ],
-              ),
-            ),
-            child: FittedBox(
-              fit: BoxFit.fitHeight,
-              child: Text("${widget.road.score} pts",
-                style: const TextStyle(color: Colors.white),
-              )
-            )
-          )
-        ]
-      ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            height: 4*sh,
-            margin: const EdgeInsets.only(top: 40),
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.white),
-              gradient: const LinearGradient(
-                begin: Alignment.centerRight,
-                end: Alignment.centerLeft,
-                colors: [
-                Color.fromRGBO(189, 189, 189, 1),
-                Color.fromRGBO(97, 97, 97, 1),
-                ],
-              ),
-            ),
-            child: FittedBox(
-              fit: BoxFit.fitHeight,
-              child: Text("PR : ${widget.road.bestScore} pts",
-                style: const TextStyle(color: Colors.white),
-              )
-            )
-          )
-        ]
-      )
+      displayPoints(isLeft),
+      displayPoints(!isLeft)
     ];
+  }
+  
+  Widget displayPoints(bool isLeft) {
+    MainAxisAlignment mainAxisAlignment = isLeft ? MainAxisAlignment.start : MainAxisAlignment.end;
+    Alignment beginning = isLeft ? Alignment.centerLeft : Alignment.centerRight;
+    Alignment ending = isLeft ? Alignment.centerRight : Alignment.centerLeft;
+    String content = isLeft ? "PR : ${widget.road.bestScore}" : "${widget.road.score}";
+    content += " pts";
+
+    return Row(
+      mainAxisAlignment: mainAxisAlignment,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          height: 4*sh,
+          margin: EdgeInsets.only(top: 7*sh),
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.white),
+            borderRadius: BorderRadius.circular(10),
+            gradient: LinearGradient(
+              begin: beginning,
+              end: ending,
+              colors: [
+                primaryColor.withOpacity(0.7),
+                secondaryColor.withOpacity(0.7),
+              ],
+            ),
+          ),
+          child: FittedBox(
+            fit: BoxFit.fitHeight,
+            child: Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: Text(content,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontFamily: "Ubuntu",
+                  fontWeight: FontWeight.w700
+                )
+              ),
+            )
+          )
+        )
+      ]
+    );
   }
 }

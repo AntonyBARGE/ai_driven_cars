@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
       // directory.
       onGenerateTitle: (BuildContext context) =>
           AppLocalizations.of(context)!.appTitle,
-        theme: ThemeData(primarySwatch: Colors.red,),
+        theme: ThemeData(primarySwatch: primaryMaterialColor,),
       debugShowCheckedModeBanner: false,
         // Define a function to handle named routes in order to support
       // Flutter web url navigation and deep linking.

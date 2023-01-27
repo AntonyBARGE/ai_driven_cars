@@ -89,12 +89,11 @@ class _ParametersAlertDialogState extends State<ParametersAlertDialog> {
           min: 0.0,
           max: 100.0,
           value: carsBrainMutationPercentage.toDouble(),
-          interval: 10,
+          interval: 25,
           stepSize: 0.5,
           showLabels: true,
           enableTooltip: true,
-          minorTicksPerInterval: 1,
-          onChanged: (dynamic value) => setState(() => carsBrainMutationPercentage = value.toInt())
+          onChanged: (dynamic value) => setState(() => carsBrainMutationPercentage = value.toDouble())
         )
       ]
     );
